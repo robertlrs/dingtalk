@@ -24,12 +24,13 @@ public class NettyServer {
 
     // nio redis server thread, default set Runtime.getRuntime().availableProcessors() * 2
     private static EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-    private static EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime()
-            .availableProcessors());
+    private static EventLoopGroup workerGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors());
     private DingtalkConfig dingtalkConfig;
+    RequestChannel requestChannel;
 
-    public NettyServer(DingtalkConfig dingtalkConfig){
+    public NettyServer(DingtalkConfig dingtalkConfig, RequestChannel requestChannel){
         this.dingtalkConfig = dingtalkConfig;
+        this.requestChannel = requestChannel;
     }
 
     public void shutdown(){
@@ -50,7 +51,7 @@ public class NettyServer {
                         sc.pipeline().addLast("http-decoder", new HttpRequestDecoder());
                         sc.pipeline().addLast("http-aggregator", new HttpObjectAggregator(65536));
                         sc.pipeline().addLast("http-encoder", new HttpResponseEncoder());
-                        sc.pipeline().addLast("defaultRedisServerHandler", new DingtalkServerHandler());
+                        sc.pipeline().addLast("defaultRedisServerHandler", new DingtalkServerHandler().setRequestChannel(requestChannel));
                     }
                 });
 

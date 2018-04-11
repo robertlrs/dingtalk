@@ -40,11 +40,10 @@ public class DingtalkServer extends Logging {
 
     public void startup(){
         info("dingtalk server is starting, please wait ...");
-
-        this.nettyServer = new NettyServer(dingtalkConfig);
-        nettyServer.startup();
-
         this.requestChannel = new RequestChannel(dingtalkConfig.getMaxReqeustQueueSize());
+
+        this.nettyServer = new NettyServer(dingtalkConfig, requestChannel);
+        nettyServer.startup();
 
         Integer numHandlerThreads = dingtalkConfig.getNumWorkThread();
         this.requestHanderPool = new DingtalkRequestHanderPool(numHandlerThreads, requestChannel);

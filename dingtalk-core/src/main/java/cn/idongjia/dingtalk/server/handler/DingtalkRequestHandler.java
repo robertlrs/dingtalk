@@ -3,7 +3,7 @@ package cn.idongjia.dingtalk.server.handler;
 import cn.idongjia.dingtalk.common.log.Logging;
 import cn.idongjia.dingtalk.network.Request;
 import cn.idongjia.dingtalk.network.RequestChannel;
-import cn.idongjia.dingtalk.tool.DingtalkClient;
+import cn.idongjia.dingtalk.network.DingtalkSender;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -39,7 +39,7 @@ public class DingtalkRequestHandler extends Logging implements Runnable {
                 return;
             }
 
-            DingtalkClient.sendMessage(request);
+            DingtalkSender.sendMessage(request);
         }
     }
 

@@ -1,5 +1,7 @@
 package cn.idongjia.dingtalk.server.handler;
 
+import cn.idongjia.dingtalk.network.Request;
+import cn.idongjia.dingtalk.network.RequestChannel;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
@@ -19,6 +21,13 @@ import java.nio.ByteBuffer;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class DingtalkServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+    private  RequestChannel requestChannel;
+
+    public DingtalkServerHandler setRequestChannel(RequestChannel requestChannel){
+        this.requestChannel = requestChannel;
+        return this;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
@@ -27,9 +36,10 @@ public class DingtalkServerHandler extends SimpleChannelInboundHandler<FullHttpR
         buffer.flip();
         response.content().writeBytes(buffer);
         buffer.clear();
-        channelHandlerContext.writeAndFlush(response);//.addListener(ChannelFutureListener.CLOSE);
-        channelHandlerContext.channel().close();
 
+        Request request = new Request();
+        requestChannel.sendRequest(request);
+        channelHandlerContext.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
 }
