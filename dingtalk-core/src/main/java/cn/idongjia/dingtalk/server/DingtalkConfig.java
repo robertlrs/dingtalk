@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DingtalkConfig extends AbstractConfig{
-    private List<String> dingTalkUrlList;
     private String serverHost;
     private Integer serverPort;
     private Integer maxReqeustQueueSize;
@@ -19,7 +18,6 @@ public class DingtalkConfig extends AbstractConfig{
     public DingtalkConfig(Map<?, ?> originals) {
         super(originals);
 
-        String dingTalkUrlStr = getString(ServerSettings.DingtalkUrlList);
         serverHost = getString(ServerSettings.ServerHost);
         serverPort = getInt(ServerSettings.ServerPort);
         maxReqeustQueueSize = getInt(ServerSettings.MaxReqeustQueueSize);
@@ -30,15 +28,6 @@ public class DingtalkConfig extends AbstractConfig{
 
         robotUrls = getString(ServerSettings.RobotUrls);
         this.robotMaxRequestOneMinute = getInt(ServerSettings.RobotMaxRequestOneMinute);
-    }
-
-
-    public List<String> getDingTalkUrlList() {
-        return dingTalkUrlList;
-    }
-
-    public void setDingTalkUrlList(List<String> dingTalkUrlList) {
-        this.dingTalkUrlList = dingTalkUrlList;
     }
 
     public String getServerHost() {
