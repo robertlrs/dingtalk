@@ -2,7 +2,6 @@ package cn.idongjia.dingtalk.network;
 
 import cn.idongjia.dingtalk.server.DingtalkConfig;
 import cn.idongjia.dingtalk.server.handler.DingtalkServerHandler;
-import cn.idongjia.dingtalk.utils.CommandLineUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -51,7 +50,7 @@ public class NettyServer {
                         sc.pipeline().addLast("http-decoder", new HttpRequestDecoder());
                         sc.pipeline().addLast("http-aggregator", new HttpObjectAggregator(65536));
                         sc.pipeline().addLast("http-encoder", new HttpResponseEncoder());
-                        sc.pipeline().addLast("defaultRedisServerHandler", new DingtalkServerHandler().setRequestChannel(requestChannel));
+                        sc.pipeline().addLast("defaultRedisServerHandler", new DingtalkServerHandler(requestChannel));
                     }
                 });
 

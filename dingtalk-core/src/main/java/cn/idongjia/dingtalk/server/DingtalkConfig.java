@@ -12,6 +12,8 @@ public class DingtalkConfig extends AbstractConfig{
     private Integer serverPort;
     private Integer maxReqeustQueueSize;
     private Integer numWorkThread;
+    private String robotUrls;
+    private Integer robotMaxRequestOneMinute;
 
 
     public DingtalkConfig(Map<?, ?> originals) {
@@ -25,6 +27,9 @@ public class DingtalkConfig extends AbstractConfig{
         if (numWorkThread > 30){
             numWorkThread = 30;
         }
+
+        robotUrls = getString(ServerSettings.RobotUrls);
+        this.robotMaxRequestOneMinute = getInt(ServerSettings.RobotMaxRequestOneMinute);
     }
 
 
@@ -66,5 +71,21 @@ public class DingtalkConfig extends AbstractConfig{
 
     public void setNumWorkThread(Integer numWorkThread) {
         this.numWorkThread = numWorkThread;
+    }
+
+    public String getRobotUrls() {
+        return robotUrls;
+    }
+
+    public void setRobotUrls(String robotUrls) {
+        this.robotUrls = robotUrls;
+    }
+
+    public Integer getRobotMaxRequestOneMinute() {
+        return robotMaxRequestOneMinute;
+    }
+
+    public void setRobotMaxRequestOneMinute(Integer robotMaxRequestOneMinute) {
+        this.robotMaxRequestOneMinute = robotMaxRequestOneMinute;
     }
 }

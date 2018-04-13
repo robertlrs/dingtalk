@@ -1,6 +1,7 @@
 package cn.idongjia.dingtalk.server;
 
 import cn.idongjia.dingtalk.common.log.Logging;
+import cn.idongjia.dingtalk.network.DingtalkSender;
 import cn.idongjia.dingtalk.network.NettyServer;
 import cn.idongjia.dingtalk.network.RequestChannel;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ public class DingtalkServer extends Logging {
     private NettyServer nettyServer;
     private RequestChannel requestChannel;
     private DingtalkRequestHanderPool requestHanderPool;
+    private DingtalkSender dingtalkSender;
 
     private CountDownLatch shutdownLatch = new CountDownLatch(1);
     private AtomicBoolean isShuttingDown = new AtomicBoolean(false);
@@ -45,8 +47,10 @@ public class DingtalkServer extends Logging {
         this.nettyServer = new NettyServer(dingtalkConfig, requestChannel);
         nettyServer.startup();
 
+        this.dingtalkSender = new DingtalkSender(this.dingtalkConfig);
+
         Integer numHandlerThreads = dingtalkConfig.getNumWorkThread();
-        this.requestHanderPool = new DingtalkRequestHanderPool(numHandlerThreads, requestChannel);
+        this.requestHanderPool = new DingtalkRequestHanderPool(numHandlerThreads, requestChannel, dingtalkSender);
 
         info("dingtalk server is stared");
 

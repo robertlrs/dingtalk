@@ -1,5 +1,7 @@
 package cn.idongjia.dingtalk.common.config;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,11 @@ public class AbstractConfig {
     }
 
     public String getString(String key) {
+        String ret = (String) get(key);
+        if (StringUtils.isBlank(ret)){
+            throw new ConfigException(String.format("empty configuration  for '%s'", key));
+        }
+
         return (String) get(key);
     }
 

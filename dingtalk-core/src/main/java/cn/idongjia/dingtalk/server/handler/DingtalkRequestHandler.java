@@ -1,5 +1,6 @@
 package cn.idongjia.dingtalk.server.handler;
 
+import cn.idongjia.dingtalk.Dingtalk;
 import cn.idongjia.dingtalk.common.log.Logging;
 import cn.idongjia.dingtalk.network.Request;
 import cn.idongjia.dingtalk.network.RequestChannel;
@@ -10,13 +11,15 @@ import java.util.concurrent.CountDownLatch;
 public class DingtalkRequestHandler extends Logging implements Runnable {
 
     private RequestChannel requestChannel;
+    private DingtalkSender dingtalkSender;
     private CountDownLatch latch = new CountDownLatch(1);
     private Integer id;
 
 
-    public DingtalkRequestHandler(Integer id, RequestChannel requestChannel){
+    public DingtalkRequestHandler(Integer id, RequestChannel requestChannel, DingtalkSender dingtalkSender){
         this.id = id;
         this.requestChannel = requestChannel;
+        this.dingtalkSender = dingtalkSender;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class DingtalkRequestHandler extends Logging implements Runnable {
                 return;
             }
 
-            DingtalkSender.sendMessage(request);
+            this.dingtalkSender.sendMessage(request);
         }
     }
 
