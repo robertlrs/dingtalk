@@ -9,4 +9,9 @@ public interface ServerSettings {
 
     public static String RobotUrls = "robot.urls";
     public static String RobotMaxRequestOneMinute = "robot.max.requests.one.minute";
+
+    public static String DingtalkGroupPrefix= "dingtalk.group.";
+    public static String DingtalkGroupUrlSuffix = ".robot.urls";
+    public static String DingtalkGroupAppSuffix = ".app.names";
+
 }

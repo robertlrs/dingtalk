@@ -34,7 +34,6 @@ public class Dingtalk {
 
     public static void main(String[] args){
         Properties serverProperties = getProsFromArgs(args);
-        System.out.println(serverProperties);
         final DingtalkServerStartable dingtalkServerStartable = new DingtalkServerStartable(serverProperties);
 
         // attach shutdown handler to catch control-c

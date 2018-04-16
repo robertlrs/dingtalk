@@ -38,14 +38,17 @@
 
 
     <logger level="debug" name="cn.idongjia" additivity="false">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="SERVICE-OUT"/>
     </logger>
 
     <logger level="info" name="interface" additivity="false">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="SERVICE-OUT"/>
     </logger>
 
     <logger level="error" name="interface" additivity="false">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="ERROR-OUT"/>
     </logger>
 

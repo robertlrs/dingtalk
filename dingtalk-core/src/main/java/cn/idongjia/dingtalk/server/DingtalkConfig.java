@@ -3,8 +3,13 @@ package cn.idongjia.dingtalk.server;
 import cn.idongjia.dingtalk.common.config.AbstractConfig;
 import cn.idongjia.dingtalk.constant.ServerSettings;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 public class DingtalkConfig extends AbstractConfig{
     private String serverHost;
@@ -13,6 +18,7 @@ public class DingtalkConfig extends AbstractConfig{
     private Integer numWorkThread;
     private String robotUrls;
     private Integer robotMaxRequestOneMinute;
+    private List<String> dingtalkGroups;
 
 
     public DingtalkConfig(Map<?, ?> originals) {
@@ -28,6 +34,10 @@ public class DingtalkConfig extends AbstractConfig{
 
         robotUrls = getString(ServerSettings.RobotUrls);
         this.robotMaxRequestOneMinute = getInt(ServerSettings.RobotMaxRequestOneMinute);
+
+        this.dingtalkGroups = getKeys().stream().filter(key -> { return key.startsWith(ServerSettings.DingtalkGroupPrefix); })
+                .map(key -> { return key.substring(ServerSettings.DingtalkGroupPrefix.length()).split("\\.")[0]; })
+                .collect(toSet()).stream().collect(toList());
     }
 
     public String getServerHost() {
@@ -76,5 +86,13 @@ public class DingtalkConfig extends AbstractConfig{
 
     public void setRobotMaxRequestOneMinute(Integer robotMaxRequestOneMinute) {
         this.robotMaxRequestOneMinute = robotMaxRequestOneMinute;
+    }
+
+    public List<String> getDingtalkGroups() {
+        return dingtalkGroups;
+    }
+
+    public void setDingtalkGroups(List<String> dingtalkGroups) {
+        this.dingtalkGroups = dingtalkGroups;
     }
 }

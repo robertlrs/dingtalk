@@ -2,9 +2,13 @@ package cn.idongjia.dingtalk.common.config;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AbstractConfig {
 
@@ -60,5 +64,14 @@ public class AbstractConfig {
             throw new ConfigException(String.format("Unknown configuration '%s'", key));
 
         return values.get(key);
+    }
+
+    public List<String> getKeys(){
+        Set<String> keys = new HashSet<>();
+        for (Map.Entry<String, Object> entry : this.values.entrySet()) {
+            keys.add(entry.getKey());
+        }
+
+        return keys.stream().collect(Collectors.toList());
     }
 }

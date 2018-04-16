@@ -5,13 +5,15 @@ import cn.idongjia.dingtalk.common.base.Base;
 import java.util.List;
 
 public class Request extends Base{
+    private static final long serialVersionUID = 1L;
+
     private String application; //应用
     private String module;  //日志模块
     private String host;    //发送过来的客户端，暂时用不到
     private String msg;
     private String msgId;   //消息在es中的id
     private List<String> receivers;   //钉钉消息的at谁
-    boolean isAtAll = false;
+    boolean atAll = false;
 
     //这个要保留
     public Request(){
@@ -67,11 +69,11 @@ public class Request extends Base{
         this.receivers = receivers;
     }
 
-    public boolean isAtAll() {
-        return isAtAll;
+    public boolean getAtAll() {
+        return atAll;
     }
 
     public void setAtAll(boolean atAll) {
-        isAtAll = atAll;
+        this.atAll = atAll;
     }
 }

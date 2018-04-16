@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Robot extends Base{
-    private String url;
-    private RobotCalculator robotCalculator;
     Logger logger = LoggerFactory.getLogger(this.getClass());//这个class待定
 
+    private String url;
+    private RobotCalculator robotCalculator;
+    private long lastSendTime=0;
 
     public Robot(String url, Integer maxRequestOneMinute){
         this.url = url;
@@ -34,28 +35,38 @@ public class Robot extends Base{
 
     private boolean doSendMessage(Request request){
         boolean successed = false;
+        final long minDiff = 1*1000;
+        long currentTime = System.currentTimeMillis();
+        long diffTime = currentTime - this.lastSendTime;
+        if (diffTime < minDiff){
+            try{
+                Thread.sleep(minDiff - diffTime);
+            }catch (InterruptedException e){
+                logger.error(String.format("机器人: %s 发送消息睡眠异常：{}", url), e);
+            }
+        }
 
         RobotMessage robotMessage = requestToRobotMessage(request);
         try{
             String reponse = HttpsUtils.postJson(this.url, robotMessage.toString());
             if (StringUtils.isBlank(reponse)){
-                logger.error("钉钉消息发送失败！");
+                logger.error(String.format("机器人：%s 钉钉消息发送失败！", url));
             }
 
             RobotResponse robotResponse = JSON.parseObject(reponse, new TypeReference<RobotResponse>() {});
             if (robotResponse.OK()){
                 successed = true;
             }else{
-                logger.error("钉钉消息发送失败, 返回结果为：{}", reponse);
+                logger.error(String.format("机器人：%s 钉钉消息发送失败, 返回结果为：{}", url), reponse);
             }
         }catch (Exception e){
-            logger.error("钉钉消息发送失败：{}", e);
+            logger.error(String.format("机器人：%s 钉钉消息发送失败：{}", url), e);
         }
 
         return successed;
     }
 
     private RobotMessage requestToRobotMessage(Request request){
-        return new RobotMessage(request.getMsg(), request.getReceivers(), request.isAtAll());
+        return new RobotMessage(request.getMsg(), request.getReceivers(), request.getAtAll());
     }
 }

@@ -19,11 +19,7 @@ public class DingtalkSender extends Logging{
 
     public DingtalkSender(DingtalkConfig dingtalkConfig){
         this.dingtalkConfig = dingtalkConfig;
-        String robotUrls = dingtalkConfig.getRobotUrls();
-        List<String> robotUrlList = Arrays.asList(robotUrls.split(","));
-        Integer maxRequestOneMinute = dingtalkConfig.getRobotMaxRequestOneMinute();
-
-        this.robotManager = new RobotManager(robotUrlList, maxRequestOneMinute);
+        this.robotManager = new RobotManager(dingtalkConfig);
     }
 
     public boolean sendMessage(Request request){
